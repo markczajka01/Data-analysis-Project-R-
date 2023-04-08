@@ -1,0 +1,51 @@
+CREATE DATABASE sales_proj;
+USE Sales_proj;
+CREATE TABLE Sales_features(Store VARCHAR(10),
+						Dates VARCHAR(15),
+                        Temperature DECIMAL(10,2),
+                        Fuel_price DECIMAL(10,3),
+                        MARKDOWN1 DECIMAL(8,2) ,
+						MARKDOWN2 DECIMAL(8,2),
+						MARKDOWN3 DECIMAL(8,2),
+						MARKDOWN4 DECIMAL(8,2), 
+						MARKDOWN5 DECIMAL(8,2),
+                        CPI DECIMAL(10,5),
+                        Unemployment DECIMAL(10,6),
+                        isHoliday VARCHAR(10));
+CREATE TABLE Sales_data3(STORE VARCHAR(10),
+                         DEPT VARCHAR(10),
+                         Dates VARCHAR(10),
+                         Week_sales DECIMAL(8,3),
+                         isHoliday VARCHAR(10));
+
+
+
+
+SHOW VARIABLES LIKE "D:\4U\SQL\Data retail\Data retail analytics\sales data-set.csv"; 
+
+LOAD DATA LOCAL INFILE "D:/4U/SQL/Data retail/Data retail analytics/sales data-set.csv"
+INTO TABLE Sales_data3
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS
+LOAD DATA LOCAL INFILE "D:/4U/SQL/Data retail/Data retail analytics/Features data set.csv"
+INTO TABLE Sales_features
+FIELDS TERMINATED BY ',' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS
+
+#Joining data frames (inner Join)
+SELECT sales_features.Store,Temperature,CPI
+FROM sales_features
+JOIN sales_data3
+ON sales_features.store=sales_data3.store
+
+
+#Sales per store 
+SELECT STORE,SUM(Week_sales) as total
+FROM Sales_data3
+GROUP BY STORE;
+#Average Sales per store
+SELECT STORE,AVG(Week_sales) as average
+FROM Sales_data3
+GROUP BY STORE;
